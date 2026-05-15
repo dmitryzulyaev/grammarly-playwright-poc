@@ -1,0 +1,30 @@
+{
+  "name": "grammarly-playwright-poc",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "launch:grammarly": "open -a 'Grammarly Desktop'",
+    "preflight": "node scripts/preflight.js",
+    "ax:inspect": "node scripts/inspect-accessibility.js",
+    "ax:grammarly": "node scripts/inspect-accessibility.js 'Grammarly Desktop'",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:browser": "playwright test tests/*.spec.js --headed",
+    "smoke": "playwright test tests/editor.bubble-visible.spec.js --headed",
+    "smoke:missing-app": "GRAMMARLY_APP_PATH=/tmp/Grammarly-Desktop-Not-Installed.app playwright test tests/editor.bubble-visible.spec.js --headed",
+    "test:bubble": "playwright test tests/editor.bubble-visible.spec.js --headed",
+    "test:suggestions": "playwright test tests/editor.suggestions-open.spec.js --headed",
+    "test:apply": "playwright test tests/editor.apply-suggestion.spec.js --headed",
+    "test:no-bubble": "playwright test tests/editor.no-bubble-clean-text.spec.js --headed",
+    "test:manual-fix": "playwright test tests/editor.manual-fix.spec.js --headed",
+    "test:partial-fix": "playwright test tests/editor.bubble-persists-after-partial-fix.spec.js --headed",
+    "smoke:suite": "playwright test tests/editor.bubble-visible.spec.js tests/editor.suggestions-open.spec.js tests/editor.apply-suggestion.spec.js tests/editor.no-bubble-clean-text.spec.js tests/editor.manual-fix.spec.js tests/editor.bubble-persists-after-partial-fix.spec.js --headed --workers=1",
+    "diag:popup": "playwright test tests/diag/popup-layout.spec.js --headed",
+    "diag:editors": "playwright test tests/diag/contenteditable.spec.js --headed",
+    "diag:all": "playwright test tests/diag/ --headed --workers=1",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0"
+  }
+}
