@@ -1,4 +1,5 @@
 // @ts-check
+const { execFileSync } = require('child_process');
 
 class EditorPage {
   /**
@@ -56,6 +57,12 @@ class EditorPage {
         </body>
       </html>
     `);
+    // bring Chromium to front so Grammarly Desktop attaches to it
+    try {
+      execFileSync('/usr/bin/osascript', ['-e',
+        'tell application "System Events" to set frontmost of (first process whose name contains "Chromium") to true'
+      ]);
+    } catch (_) {}
   }
 }
 
