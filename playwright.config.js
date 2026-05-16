@@ -31,6 +31,7 @@ module.exports = defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         headless: false,
+        channel: 'chrome',
         launchOptions: {
           args: [
             '--disable-crash-reporter',

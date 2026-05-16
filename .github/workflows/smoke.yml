@@ -20,7 +20,7 @@ jobs:
         run: npm ci --registry https://registry.npmjs.org
 
       - name: Install Playwright browsers
-        run: npx playwright install chromium
+        run: npx playwright install chrome
 
       - name: Ensure Grammarly Desktop is running
         run: |
