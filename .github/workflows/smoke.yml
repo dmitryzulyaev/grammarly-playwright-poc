@@ -22,12 +22,14 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install chromium
 
-      - name: Restart Grammarly Desktop
+      - name: Ensure Grammarly Desktop is running
         run: |
-          killall "Grammarly Desktop" || true
-          sleep 2
-          open -a 'Grammarly Desktop'
-          sleep 5
+          if ! pgrep -x "Grammarly Desktop" > /dev/null; then
+            open -a 'Grammarly Desktop'
+            sleep 15
+          else
+            echo "Grammarly Desktop already running"
+          fi
 
       - name: Preflight check
         run: npm run preflight
