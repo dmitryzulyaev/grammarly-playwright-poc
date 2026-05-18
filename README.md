@@ -122,6 +122,73 @@ docs/
   accessibility-strategy.md
 ```
 
+## CI / CD
+
+Tests run automatically via **GitHub Actions** on a self-hosted macOS runner.
+
+| Trigger | What runs |
+|---|---|
+| Every `git push` | Full smoke suite + negative tests |
+| Daily at **8:00 AM** Mon–Fri | Full smoke suite |
+
+```yaml
+# .github/workflows/smoke.yml
+on:
+  push:
+  schedule:
+    - cron: '0 8 * * 1-5'
+```
+
+**Self-hosted runner requirement:** Grammarly Desktop only attaches to the system-installed Google Chrome (not Playwright's bundled Chromium). Tests require an active macOS user session with display — headless mode is not supported.
+
+On every CI run, a **Playwright HTML report** with desktop screenshot evidence is uploaded as a build artifact.
+
+---
+
+## Test Coverage
+
+### Automated — Smoke Suite (6 tests, P1)
+
+| ID | Test | What it verifies |
+|---|---|---|
+| SM-01 | `editor.bubble-visible` | Bubble appears after typing text with errors |
+| SM-02 | `editor.suggestions-open` | Suggestion popup opens on bubble click |
+| SM-03 | `editor.apply-suggestion` | Applying a suggestion updates editor text |
+| SM-04 | `editor.no-bubble-clean-text` | No bubble for grammatically correct text |
+| SM-05 | `editor.manual-fix` | Bubble disappears after all errors are manually fixed |
+| SM-06 | `editor.bubble-persists-after-partial-fix` | Bubble stays visible after fixing only one of two errors |
+
+### Editor Compatibility — Manually Verified
+
+| Editor type | Example | Result |
+|---|---|---|
+| `<textarea>` | Custom HTML test page | ✅ Pass |
+| `contenteditable` | Reddit post editor | ✅ Pass |
+| `input[type=text]` | Reddit title field | ✅ Pass |
+| TinyMCE | fiddle.tiny.cloud | ✅ Pass |
+| Quill | quilljs.com | ✅ Pass |
+
+### Not Automated
+
+| Scenario | Reason |
+|---|---|
+| Login / account setup | Requires credentials |
+| macOS permission granting | Requires manual UI interaction |
+| Visual regression of popup | OS-level overlay, no stable pixel signature |
+| Performance / latency testing | Needs dedicated perf framework |
+
+---
+
+## Documentation
+
+All project documentation is maintained in Google Docs:
+
+- 📋 [Test Plan v2](https://docs.google.com/document/d/1nA9taGNRk2R8LTWADYra9dDPkg0MVCkCxxQ2W7Al0yI/edit)
+- 🚀 [Release Management Plan](https://docs.google.com/document/d/1zRKfWauV_4Tjw4oHDU7z7Gn0smc7Gk6NfRse143HSjU/edit)
+- 🐛 [Bug Reports](https://docs.google.com/document/d/1beqZb6qqKf8xaQQQM8gk_9DhyQ-YhLsogH8cnf4HCEI/edit)
+
+---
+
 ## Why Desktop Screenshots?
 
 Grammarly Desktop renders its bubble and popup as macOS-level overlays outside the browser DOM. Playwright `page.screenshot()` misses them entirely. The framework uses macOS `screencapture -x` and pixel-detection (border tracing, teal-green cluster) to locate the bubble and Accept button, then clicks with `cliclick`.
