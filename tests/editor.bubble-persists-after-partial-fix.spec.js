@@ -13,7 +13,7 @@ const {
 } = require('../support/assertions/grammarlyBubbleAssertion');
 const { EditorPage } = require('../support/pages/editorPage');
 
-test('should keep bubble visible after applying only one of two suggestions', async ({ page }, testInfo) => {
+test('should keep bubble visible when user fixes only one of two errors', async ({ page }, testInfo) => {
   const editorPage = new EditorPage(page);
   await editorPage.openTextarea();
 

@@ -3,6 +3,7 @@ const { expect, test } = require('@playwright/test');
 const { texts } = require('../fixtures/texts');
 const { typeTextAndTriggerBubble } = require('../support/actions/grammarlyActions');
 const { expectGrammarlyBubbleVisible } = require('../support/assertions/grammarlyBubbleAssertion');
+const { attachDesktopScreenshot } = require('../support/evidence/desktopEvidence');
 const { EditorPage } = require('../support/pages/editorPage');
 
 test('should show Grammarly bubble when user types text with mistakes', async ({ page }, testInfo) => {
@@ -23,4 +24,6 @@ test('should show Grammarly bubble when user types text with mistakes', async ({
     editor: editorPage.textarea,
     testInfo
   });
+
+  await attachDesktopScreenshot(testInfo, 'bubble-visible');
 });

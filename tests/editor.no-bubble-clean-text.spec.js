@@ -3,6 +3,7 @@ const { expect, test } = require('@playwright/test');
 const { texts } = require('../fixtures/texts');
 const { triggerEditorWithMouseSequence } = require('../support/actions/grammarlyActions');
 const { expectGrammarlyBubbleAbsent } = require('../support/assertions/grammarlyBubbleAssertion');
+const { attachDesktopScreenshot } = require('../support/evidence/desktopEvidence');
 const { EditorPage } = require('../support/pages/editorPage');
 
 test('should not show Grammarly bubble when user types correct text', async ({ page }, testInfo) => {
@@ -20,4 +21,6 @@ test('should not show Grammarly bubble when user types correct text', async ({ p
 
   await expect(editorPage.textarea).toHaveValue(texts.clean);
   await expectGrammarlyBubbleAbsent({ page, testInfo, editor: editorPage.textarea });
+
+  await attachDesktopScreenshot(testInfo, 'no-bubble-clean-text');
 });
